@@ -48,6 +48,21 @@ exports.reScheduleAppointment =  async (req, res) => {
   }
 };
 
+exports.deleteAppointment =  async (req, res) => {
+  try {
+    const {  date, timeslot, childName, age, reason, additionalDetails } = req.body;
+    const id=req.params.id;
+    // Update the appointment into the appointments table
+    const appointment = await Appointment.deleteOne({_id:id});
+
+    res.status(201).json({ success: true, message: 'Appointment cancel.', appointment });
+  } catch (error) {
+    console.error('Error booking slot:', error);
+    res.status(500).json({ success: false, message: 'Failed to cancel slot' });
+  }
+};
+
+
 
 
 
