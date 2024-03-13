@@ -386,3 +386,32 @@ exports.verifyPhoneOtp = async (req, res, next) => {
   }
 };
 
+// ---------------------- Update user-------------------------
+
+exports.update_user_profile=async (req,res,next)=>{
+try {
+  const id=req.params.userId;
+  console.log(req.body)
+  const updateOps={};
+  // for(const ops of req.body){
+  //   updateOps[ops.propName]=ops.value;
+  // }
+
+  const user=await User.updateOne({_id:id},{$set:req.body}).exec();
+
+  res.status(200).json({
+    type:"success",
+    message:"Profile updated.",
+    data:user
+
+  })
+
+} catch (error) {
+  next(error)
+  
+}
+ 
+
+
+
+}

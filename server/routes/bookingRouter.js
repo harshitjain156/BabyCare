@@ -1,5 +1,5 @@
 const express = require('express');
-const {availableSlots, bookAppointment, userAppointments, doctorAppointments} = require("../controller/bookingController");
+const {availableSlots, bookAppointment, userAppointments, doctorAppointments, reScheduleAppointment, deleteAppointment} = require("../controller/bookingController");
 const router = express.Router();
 
 
@@ -11,4 +11,7 @@ router.post("/available-slots", availableSlots);
 router.get("/user-appointments/:userId", userAppointments);
 router.get("/doctor-appointments/:doctorId", doctorAppointments);
 
+router.patch('/reschedule/:id',reScheduleAppointment);
+
+router.delete('/cancel/:id',deleteAppointment);
 module.exports = router;
