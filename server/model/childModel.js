@@ -32,12 +32,27 @@ const childSchema = new Schema({
         default: 10,
         // required: true,
       },
-      // vaccinations: [
-      //   {
-      //       type: Schema.Types.ObjectId,
-      //       ref: "Vaccination"
-      //   }
-      // ]
+      vaccinations: [{
+        vaccineId:{
+            type: Schema.Types.ObjectId,
+            ref: "Vaccines"
+        },
+        status:{
+          type:String,default:"Pending"
+        },
+        notify:{
+          type:Boolean,
+          default:true
+        },
+        predictedDate:{
+          type:Date
+        },
+        vaccinatedDate:{
+          type:Date
+        }
+      
+      }
+      ]
 
 
 }, { timestamps: true });

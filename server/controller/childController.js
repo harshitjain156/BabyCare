@@ -57,7 +57,7 @@ exports.getAllChild = async(req, res)=>{
             data:children})
 
     }catch(err){
-        consle.log(err);
+        // consle.log(err);
         res.status(500).json({message:"Server Error"})
     }
     
