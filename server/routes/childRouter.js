@@ -20,12 +20,17 @@ router.post("/create-new-child",async (req,res)=>{
 
      for(i=0;i<myVaccines.length;i++){
         console.log(myVaccines[i]._id);
+        
+        let nextDate=predictNextDate(parseInt(myVaccines[i].age.split(" ")[0]),birthdate);
+        let currentDate=new Date();
+        let dateStatus=compareDates(nextDate);
+        console.log(dateStatus)
         myVaccinesArray.push({
             vaccineId: myVaccines[i]._id, // Replace someVaccineId with the actual ObjectId
-            status: "Pending",
+            status: dateStatus,
             notify: true,
-            predictedDate: Date.now(), // Replace somePredictedDate with the actual Date
-            vaccinatedDate: Date.now() 
+            predictedDate: nextDate, // Replace somePredictedDate with the actual Date
+            vaccinatedDate: null
         });
         
         
@@ -47,13 +52,42 @@ router.post("/create-new-child",async (req,res)=>{
         const newChild = await createChild.save();
         console.log(myVaccinesArray)
 
-        console.log(newChild)
+        console.log(newChild);
+
+       
+
     res.json(newChild);
     }catch(err){
         console.log(err);
     }
 })
+function predictNextDate(durationInMonths,birthdate) {
+    // Get today's date
+    let currentDate = new Date(birthdate);
 
+    // Calculate the next date by adding the duration in months
+    let nextDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + durationInMonths, currentDate.getDate());
+
+    // Return the next date
+    return nextDate;
+}
+function compareDates(predictedDate) {
+    // Get the current date
+    let currentDate = new Date();
+
+    // Convert both dates to milliseconds since January 1, 1970
+    let currentTime = currentDate.getTime();
+    let predictedTime = predictedDate.getTime();
+
+    // Compare the current time with the predicted time
+    if (predictedTime > currentTime) {
+        return "upcoming"; // Predicted date is in the future
+    } else if (predictedTime < currentTime) {
+        return "delayed"; // Predicted date is in the past
+    } else {
+        return "today"; // Predicted date is today
+    }
+}
 
 router.post("/add-new-vaccines",(req,res)=>{
     const vaccine=new Vaccine({
